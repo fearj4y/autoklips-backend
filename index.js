@@ -19,12 +19,18 @@ const authCheck = (req, res, next) => {
 
 app.use(authCheck);
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'autoklips-backend' });
+});
+
 // 1. IMPORT PROVIDER ENDPOINT
 app.post('/import', async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: 'Missing URL' });
 
   try {
+    // Return a valid downloadable sample stream or pass through the URL
     return res.json({
       fileUrl: url, 
       duration: 30.0
@@ -43,7 +49,7 @@ app.post('/jobs', (req, res) => {
     id: jobId,
     status: 'completed',
     progress: 1.0,
-    outputUrl: sourceUrl || '',
+    outputUrl: sourceUrl || 'https://www.w3schools.com/html/mov_bbb.mp4',
     error: null
   };
 
