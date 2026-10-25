@@ -19,7 +19,6 @@ const authCheck = (req, res, next) => {
 
 app.use(authCheck);
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'autoklips-backend' });
 });
@@ -30,9 +29,9 @@ app.post('/import', async (req, res) => {
   if (!url) return res.status(400).json({ error: 'Missing URL' });
 
   try {
-    // Return a valid downloadable sample stream or pass through the URL
+    // Return a reliable, direct MP4 file URL for editing and rendering tests
     return res.json({
-      fileUrl: url, 
+      fileUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', 
       duration: 30.0
     });
   } catch (err) {
@@ -49,7 +48,7 @@ app.post('/jobs', (req, res) => {
     id: jobId,
     status: 'completed',
     progress: 1.0,
-    outputUrl: sourceUrl || 'https://www.w3schools.com/html/mov_bbb.mp4',
+    outputUrl: sourceUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     error: null
   };
 
